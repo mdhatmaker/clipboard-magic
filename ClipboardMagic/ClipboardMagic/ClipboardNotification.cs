@@ -30,11 +30,12 @@ namespace ClipboardMagic
         /// <param name="e">Event arguments for the event.</param>
         private static void OnClipboardUpdate(EventArgs e)
         {
-            var handler = ClipboardUpdate;
+            ClipboardUpdate?.Invoke(null, e);
+            /*var handler = ClipboardUpdate;
             if (handler != null)
             {
                 handler(null, e);
-            }
+            }*/
         }
 
         /// <summary>
