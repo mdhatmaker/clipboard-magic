@@ -14,21 +14,22 @@ namespace ClipboardMagic
 {
     public partial class MainForm : Form
     {
-        private ClipBoardMonitor cbm = null;
+        private ClipBoardMonitor _cbm = null;
 
-        private List<string> imageTexts = new List<string>();
+        private List<string> _imageTexts = new List<string>();
 
-        PythonScriptForm pythonForm;
-        private Form pyForm
+        PythonScriptForm _pythonForm;
+
+        private PythonScriptForm pyForm
         {
             get
             {
-                if (pythonForm == null)
+                if (_pythonForm == null)
                 {
-                    pythonForm = new PythonScriptForm();
-                    pythonForm.Show();
+                    _pythonForm = new PythonScriptForm();
+                    _pythonForm.Show();
                 }
-                return pythonForm;
+                return _pythonForm;
             }
         }
 
@@ -36,11 +37,11 @@ namespace ClipboardMagic
         {
             InitializeComponent();
 
-            cbm = new ClipBoardMonitor();
-            cbm.OnClipboardTextUpdate += cbm_ClipboardTextContent;
-            cbm.OnClipboardUrlUpdate += cbm_ClipboardUrlContent;
-            cbm.OnClipboardImageUpdate += cbm_ClipboardImageContent;
-            cbm.OnClipboardAudioUpdate += cbm_ClipboardAudioContent;
+            _cbm = new ClipBoardMonitor();
+            _cbm.OnClipboardTextUpdate += cbm_ClipboardTextContent;
+            _cbm.OnClipboardUrlUpdate += cbm_ClipboardUrlContent;
+            _cbm.OnClipboardImageUpdate += cbm_ClipboardImageContent;
+            _cbm.OnClipboardAudioUpdate += cbm_ClipboardAudioContent;
 
         }
         
@@ -59,7 +60,7 @@ namespace ClipboardMagic
         private void cbm_ClipboardImageContent(Image img)
         {
             Console.WriteLine("Image: {0}x{1}", img.Width, img.Height);
-            picImages.Image = img;
+            imageList1.Images.Add(img);
             //listClipboardSnippets.Items.Add(txt);
         }
 
@@ -130,6 +131,14 @@ namespace ClipboardMagic
         {
             pyForm.Show();
         }
+
+        private void filterAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var scopeDict = new Dictionary<string, string>();
+            scopeDict.Add("__text", lblText.Text);
+            pyForm.RunPythonFile(@"../../FilterA.py", scopeDict);
+        }
+
     } // end of class ClipboardMonitorForm
 
 
