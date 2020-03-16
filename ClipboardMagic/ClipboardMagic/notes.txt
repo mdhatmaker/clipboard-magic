@@ -1,4 +1,8 @@
 ﻿
+Text Filter Ideas
+
+wrap text (at 80 chars?)
+convert "\\" paths to "\" or even "/" paths
 
 
 

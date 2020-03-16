@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -139,10 +140,39 @@ namespace ClipboardMagic
             pyForm.RunPythonFile(@"../../FilterA.py", scopeDict);
         }
 
+
+        private void AddImagesToListview()
+        {
+            DirectoryInfo dir = new DirectoryInfo(@"c:\pic");
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                try
+                {
+                    this.imageList1.Images.Add(Image.FromFile(file.FullName));
+                }
+                catch
+                {
+                    Console.WriteLine("This is not an image file");
+                }
+            }
+            this.lviewImages.View = View.LargeIcon;
+            this.imageList1.ImageSize = new Size(32, 32);
+            this.lviewImages.LargeImageList = this.imageList1;
+            //or
+            //this.listView1.View = View.SmallIcon;
+            //this.listView1.SmallImageList = this.imageList1;
+
+            for (int j = 0; j < this.imageList1.Images.Count; j++)
+            {
+                ListViewItem item = new ListViewItem();
+                /*ListViewItem item = new ListViewItem(file.Name);
+                item.SubItems.Add(file.Extension);
+                item.ImageKey = file.Name;*/
+                item.ImageIndex = j;
+                this.lviewImages.Items.Add(item);
+            }    
+        }
     } // end of class ClipboardMonitorForm
-
-
- 
 
 
 } // end of namespace
